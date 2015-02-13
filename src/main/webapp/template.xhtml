@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" lang="#{visit.locale}"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view>
+        <h:head>
+            <title>#{msgs.title}</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <meta name="description" content="#{msgs.title}" />
+            <meta name="author" content="Samuel Franklyn" />
+            <base href="#{app.baseURL}" />
+            <link rel="stylesheet" type="text/css" href="style.css" />
+        </h:head>
+
+        <h:body>
+            <div id="wrapper-content">
+                <c:if test="#{visit.users!=null}">
+                    <div id="content">
+                        #{msgs.welcome} #{visit.users.userFullName} 
+                    </div>
+                    <div id="wrapper-menu-page">
+                        <div id="menu-page">
+                            <div class="sidenav">
+                                <ul>
+                                    <c:forEach items="#{visit.menuList}" var="menu">
+                                        <ui:include src="secure/#{menu}"/>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div><!--menu-page-->
+                    </div>
+                </c:if>
+                <div id="content">
+                    <ui:insert name="content">Main Content</ui:insert>
+                </div>
+            </div>
+
+            <div id="wrapper-footer">
+                <div id="footer">
+                    <br/>
+                    <h:form id="chooseLanguage">
+                        #{msgs.language} : &#160; &#160;
+                        <p:commandButton id="english" value="English" icon="english"
+                                         action="#{visit.chooseEnglish()}" ajax="false" />
+                        <p:commandButton id="indonesia" value="Indonesia" icon="indonesia"
+                                         action="#{visit.chooseIndonesia}" ajax="false"/>
+                    </h:form><br/>
+                    Design by <a href="http://www.studio7designs.com">studio7designs</a> | Copyright 2015 <a href="http://samuelf.web.id">Samuel Franklyn</a>
+                    <br/><br/>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>

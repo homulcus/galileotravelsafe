@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h1>#{msgs.create} #{msgs.user} #{msgs.role}</h1>
+            <h:link value="#{msgs.users_roles_maintenance}" outcome="users_roles"/><br/><br/>
+            <h:form>
+                <table>
+                    <tr>
+                        <td>#{msgs.user_name} :<br/><br/></td>
+                        <td><p:autoComplete value="#{usersRoles.usersRoles.users.userName}"
+                                            completeMethod="#{usersRoles.autoCompleteUsers}"/>
+                            <br/><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.role_name}</td>
+                        <td>:<p:selectOneMenu value="#{usersRoles.usersRoles.roles.roleName}">
+                                <f:selectItems value="#{usersRoles.roleNameList}" />
+                            </p:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><p:commandButton value="#{msgs.create}"
+                                             ajax="false"
+                                             action="#{usersRoles.saveCreate}" />
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+            <p:messages/>
+        </ui:define>
+    </ui:composition>
+</html>

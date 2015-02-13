@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{users.findUser}"/>
+            </f:metadata>
+            <h1>#{msgs.update} #{msgs.user}</h1>
+            <p:link value="#{msgs.users_maintenance}" outcome="users"/><br/><br/>
+            <h:form>
+                <table>
+                    <tr>
+                        <td>#{msgs.user_name}</td>
+                        <td>:#{users.users.userName}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.user_full_name}</td>
+                        <td>:<p:inputText size="50"
+                                          maxlength="200"
+                                          value="#{users.users.userFullName}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.user_email}</td>
+                        <td>:<p:inputText size="50"
+                                          maxlength="200"
+                                          value="#{users.users.userEmail}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.user_phone}</td>
+                        <td>:<p:inputText size="50"
+                                          maxlength="50"
+                                          value="#{users.users.userPhone}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><p:commandButton value="#{msgs.update}"
+                                             ajax="false"
+                                             action="#{users.saveUpdate}" />
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+            <p:messages/>
+        </ui:define>
+    </ui:composition>
+</html>

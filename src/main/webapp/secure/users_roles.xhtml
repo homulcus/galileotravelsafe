@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h1>#{msgs.users_roles_maintenance}</h1>
+            <p:link value="#{msgs.advanced}" outcome="advanced"/><br/><br/>
+            <h:form>
+                <h:commandLink action="#{usersRoles.create}"
+                               value="#{msgs.create}"/>
+                <br/><br/>
+                <p:dataTable value="#{usersRoles.dataModel}"
+                             rows="#{usersRoles.noOfRows}"
+                             var="userRole" paginator="true" lazy="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.role_name}"/>
+                        </f:facet>
+                        #{userRole.roles.roleName}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.user_name}"/>
+                        </f:facet>
+                        #{userRole.users.userName}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.action}"/>
+                        </f:facet>
+                        <h:link value="#{msgs.read}" outcome="users_rolesRead">
+                            <f:param name="userId" value="#{userRole.usersRolesPK.userId}"/>
+                            <f:param name="roleId" value="#{userRole.usersRolesPK.roleId}"/>
+                        </h:link>&nbsp;&nbsp;
+                        <h:link value="#{msgs.delete}" outcome="users_rolesDelete">
+                            <f:param name="userId" value="#{userRole.usersRolesPK.userId}"/>
+                            <f:param name="roleId" value="#{userRole.usersRolesPK.roleId}"/>
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

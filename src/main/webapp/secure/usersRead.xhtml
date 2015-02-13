@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{users.findUser()}"/>
+            </f:metadata>
+            <h1>#{msgs.read} #{msgs.user}</h1>
+            <p:link value="#{msgs.users_maintenance}" outcome="users"/><br/><br/>
+            <table>
+                <tr>
+                    <td>#{msgs.user_name}</td>
+                    <td>:#{users.users.userName}</td>
+                </tr>
+                <tr>
+                    <td>#{msgs.user_full_name}</td>
+                    <td>:#{users.users.userFullName}</td>
+                </tr>
+                <tr>
+                    <td>#{msgs.user_email}</td>
+                    <td>:#{users.users.userEmail}</td>
+                </tr>
+                <tr>
+                    <td>#{msgs.user_phone}</td>
+                    <td>:#{users.users.userPhone}</td>
+                </tr>
+            </table>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <ul>
+                <li>
+                    <p:commandLink action="/secure/roles?faces-redirect=true" 
+                                   value="#{msgs.roles_maintenance}" />
+                </li>
+                <li>
+                    <p:commandLink action="/secure/users_roles?faces-redirect=true" 
+                                   value="#{msgs.users_roles_maintenance}" />
+                </li>
+                <li>
+                    <p:commandLink action="/secure/urls_roles?faces-redirect=true" 
+                                   value="#{msgs.urls_roles_maintenance}" />
+                </li>
+                <li>
+                    <p:commandLink action="/secure/configs?faces-redirect=true" 
+                                   value="#{msgs.configs_maintenance}" />
+                </li>
+            </ul> 
+        </ui:define>
+    </ui:composition>
+</html>

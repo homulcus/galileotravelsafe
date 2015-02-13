@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{urlsRoles.findUrlRole}"/>
+            </f:metadata>
+            <h1>#{msgs.delete} #{msgs.urls_roles}</h1>
+            <p:link value="#{msgs.urls_roles_maintenance}" outcome="urls_roles"/><br/><br/>
+            <h:form>
+                <table>
+                    <tr>
+                        <td>#{msgs.url_role}</td>
+                        <td>:#{urlsRoles.urlsRoles.urlsRolesPK.urlRole}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.role_name}</td>
+                        <td>:#{urlsRoles.urlsRoles.roles.roleName}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><p:commandButton value="#{msgs.delete}"
+                                             ajax="false"
+                                             action="#{urlsRoles.saveDelete}" />
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+            <p:messages/>
+        </ui:define>
+    </ui:composition>
+</html>

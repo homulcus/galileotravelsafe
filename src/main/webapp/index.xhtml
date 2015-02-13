@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="template.xhtml">
+        <ui:define name="content">
+            <c:if test="#{visit.users==null}">
+                <table>
+                    <tr>
+                        <td>
+                            <h2>#{msgs.title}</h2>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:form>
+                                <table>
+                                    <tr>
+                                        <td>#{msgs.user_name}:</td>
+                                        <td>
+                                            <p:inputText value="#{logIn.userName}"/>
+                                            &#160;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#{msgs.user_password}:</td>
+                                        <td>
+                                            <p:password value="#{logIn.userPassword}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <p:commandButton value="#{msgs.login}" 
+                                                             action="#{logIn.logIn()}"
+                                                             ajax="false"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p:messages/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </table>
+            </c:if>
+        </ui:define>
+    </ui:composition>
+</html>

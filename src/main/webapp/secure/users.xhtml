@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h1>#{msgs.users_maintenance}</h1>
+            <h:form>
+                <p:commandLink action="#{users.create}"
+                               value="#{msgs.create}"/>
+                <br/><br/>
+                <p:dataTable value="#{users.dataModel}"
+                             rows="#{users.noOfRows}"
+                             var="user" paginator="true" lazy="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.user_id}" />
+                        </f:facet>
+                        #{user.userId}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.user_name}" />
+                        </f:facet>
+                        #{user.userName}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.user_full_name}" />
+                        </f:facet>
+                        #{user.userFullName}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.action}" />
+                        </f:facet>
+                        <h:link value="#{msgs.read}" outcome="usersRead">
+                            <f:param name="userId" value="#{user.userId}"/>
+                        </h:link>&nbsp;&nbsp;
+                        <h:link value="#{msgs.update}" outcome="usersUpdate">
+                            <f:param name="userId" value="#{user.userId}"/>
+                        </h:link>&nbsp;&nbsp;
+                        <h:link value="#{msgs.delete}" outcome="usersDelete">
+                            <f:param name="userId" value="#{user.userId}"/>
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+                <c:if test="#{visit.isAdmin}">
+                    <br/>
+                    <h:link value="#{msgs.advanced}" outcome="/secure/advanced"/>
+                </c:if>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

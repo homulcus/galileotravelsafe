@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h1>#{msgs.create} #{msgs.role}</h1>
+            <p:link value="#{msgs.roles_maintenance}" outcome="roles"/><br/><br/>
+            <h:form>
+                <table>
+                    <tr>
+                        <td>#{msgs.role_name}</td>
+                        <td>:<p:inputText size="30" maxlength="50"
+                                          value="#{roles.roles.roleName}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.role_desc}</td>
+                        <td>:<p:inputText size="50" maxlength="100"
+                                          value="#{roles.roles.roleDesc}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.role_menu}</td>
+                        <td>:<p:inputText size="30" maxlength="50"
+                                          value="#{roles.roles.roleMenu}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><p:commandButton value="#{msgs.create}"
+                                             action="#{roles.saveCreate}" />
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+            <p:messages/>
+        </ui:define>
+    </ui:composition>
+</html>

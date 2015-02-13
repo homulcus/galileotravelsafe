@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h1>#{msgs.configs_maintenance}</h1>
+            <p:link value="#{msgs.advanced}" outcome="advanced"/><br/><br/>
+            <h:form>
+                <p:commandLink action="#{configs.create}"
+                               value="#{msgs.create}"/>
+                <br/><br/>
+                <p:dataTable value="#{configs.dataModel}"
+                             rows="#{configs.noOfRows}"
+                             var="config" paginator="true" lazy="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.config_id}"/>
+                        </f:facet>
+                        #{config.configId}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.config_key}"/>
+                        </f:facet>
+                        #{config.configKey}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.config_desc}"/>
+                        </f:facet>
+                        #{config.configDesc}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.config_type}"/>
+                        </f:facet>
+                        #{config.configType}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.config_value}"/>
+                        </f:facet>
+                        #{config.configValue}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.action}"/>
+                        </f:facet>
+                        <h:link value="#{msgs.read}" outcome="configsRead">
+                            <f:param name="configId" value="#{config.configId}"/>
+                        </h:link>&nbsp;&nbsp;
+                        <h:link value="#{msgs.update}" outcome="configsUpdate">
+                            <f:param name="configId" value="#{config.configId}"/>
+                        </h:link>&nbsp;&nbsp;
+                        <h:link value="#{msgs.delete}" outcome="configsDelete">
+                            <f:param name="configId" value="#{config.configId}"/>
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{configs.findConfig}"/>
+            </f:metadata>
+            <h1>#{msgs.update} #{msgs.config}</h1>
+            <p:link value="#{msgs.configs_maintenance}" outcome="configs"/><br/><br/>
+            <h:form>
+                <table>
+                    <tr>
+                        <td>#{msgs.config_key}</td>
+                        <td>:#{configs.configs.configKey}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.config_desc}</td>
+                        <td>:<p:inputText size="50" maxlength="100"
+                                          value="#{configs.configs.configDesc}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.config_type}</td>
+                        <td>:<p:inputText size="50" maxlength="100"
+                                          value="#{configs.configs.configType}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">#{msgs.config_value}</td>
+                        <td>:<p:inputTextarea cols="55" 
+                                             rows="5"
+                                             value="#{configs.configs.configValue}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><p:commandButton value="#{msgs.update}"
+                                             ajax="false"
+                                             action="#{configs.saveUpdate}" />
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+            <p:messages/>
+        </ui:define>
+    </ui:composition>
+</html>
