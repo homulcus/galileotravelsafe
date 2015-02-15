@@ -80,10 +80,13 @@ public class Users extends Base implements Serializable {
     private String userPassword;
     @Column(name = "user_full_name", length = 200)
     private String userFullName;
-    @Column(name = "user_email", length = 200)
-    private String userEmail;
-    @Column(name = "user_phone", length = 50)
-    private String userPhone;
+    @Column(name = "user_desc", length = 200)
+    private String userDesc;
+    @Column(name = "user_create_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date userCreateDate;
+    @Column(name = "user_create_by", length = 50)
+    private String userCreateBy;
     @Column(name = "user_last_pwd_change")
     @Temporal(TemporalType.TIMESTAMP)
     private Date userLastPwdChange;
@@ -92,8 +95,7 @@ public class Users extends Base implements Serializable {
         userName = "";
         userPassword = "";
         userFullName = "";
-        userEmail = "";
-        userPhone = "";
+        userDesc = "";
         userLastPwdChange = new Date();
     }
 
@@ -129,28 +131,36 @@ public class Users extends Base implements Serializable {
         this.userFullName = userFullName;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getUserPhone() {
-        return userPhone;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
     public Date getUserLastPwdChange() {
         return userLastPwdChange;
     }
 
     public void setUserLastPwdChange(Date userLastPwdChange) {
         this.userLastPwdChange = userLastPwdChange;
+    }
+
+    public String getUserDesc() {
+        return userDesc;
+    }
+
+    public void setUserDesc(String userDesc) {
+        this.userDesc = userDesc;
+    }
+
+    public Date getUserCreateDate() {
+        return userCreateDate;
+    }
+
+    public void setUserCreateDate(Date userCreateDate) {
+        this.userCreateDate = userCreateDate;
+    }
+
+    public String getUserCreateBy() {
+        return userCreateBy;
+    }
+
+    public void setUserCreateBy(String userCreateBy) {
+        this.userCreateBy = userCreateBy;
     }
 
 }
