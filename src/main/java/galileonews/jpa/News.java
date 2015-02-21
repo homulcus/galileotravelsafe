@@ -39,8 +39,10 @@ import javax.validation.constraints.Size;
 @Table(name = "news")
 @NamedQueries({
     @NamedQuery(name = "News.selectAll",
-            query = "SELECT n FROM News n")}
-)
+            query = "SELECT n FROM News n"),
+    @NamedQuery(name = "News.selectAllCount",
+            query = "SELECT COUNT(n) FROM News n")
+})
 public class News implements Serializable {
 
     private static final long serialVersionUID = -2454935027264327325L;
