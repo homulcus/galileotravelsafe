@@ -29,7 +29,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 
 /**
  *
@@ -46,6 +49,14 @@ import javax.validation.constraints.Size;
 public class News implements Serializable {
 
     private static final long serialVersionUID = -2454935027264327325L;
+    @Transient
+    private final DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+            .appendDayOfMonth(2)
+            .appendLiteral(' ')
+            .appendMonthOfYearShortText()
+            .appendLiteral(' ')
+            .appendYear(4, 4)
+            .toFormatter();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -116,12 +127,20 @@ public class News implements Serializable {
         return newsValidFrom;
     }
 
+    public String getNewsValidFromDMY() {
+        return dtf.print(newsValidFrom.getTime());
+    }
+
     public void setNewsValidFrom(Date newsValidFrom) {
         this.newsValidFrom = newsValidFrom;
     }
 
     public Date getNewsValidTo() {
         return newsValidTo;
+    }
+
+    public String getNewsValidToDMY() {
+        return dtf.print(newsValidTo.getTime());
     }
 
     public void setNewsValidTo(Date newsValidTo) {

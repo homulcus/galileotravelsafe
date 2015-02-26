@@ -24,19 +24,31 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_text}"/>
                         </f:facet>
-                        #{newsItem.newsText}
+                        <pre>#{newsItem.newsText}</pre>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_valid_from}"/>
                         </f:facet>
-                        #{newsItem.newsValidFrom}
+                        #{newsItem.newsValidFromDMY}
                     </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_valid_to}"/>
                         </f:facet>
-                        #{newsItem.newsValidTo}
+                        #{newsItem.newsValidToDMY}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.news_important}"/>
+                        </f:facet>
+                        #{newsItem.newsImportant}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.news_pcc}"/>
+                        </f:facet>
+                        #{newsItem.newsPcc}
                     </p:column>
                     <p:column>
                         <f:facet name="header">

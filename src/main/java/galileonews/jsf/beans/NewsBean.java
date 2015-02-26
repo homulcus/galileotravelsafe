@@ -62,7 +62,7 @@ public class NewsBean implements Serializable {
         news = new News();
     }
 
-    public void findRole() {
+    public void findNews() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.
                 getCurrentInstance().getExternalContext().getRequest();
         String newsId = req.getParameter("newsId");
