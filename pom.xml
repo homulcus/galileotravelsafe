@@ -27,11 +27,6 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>redstone-xmlrpc</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>galileonews-api</artifactId>
             <version>${project.version}</version>
         </dependency>

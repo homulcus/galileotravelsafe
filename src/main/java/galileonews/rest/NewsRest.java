@@ -15,7 +15,9 @@
  */
 package galileonews.rest;
 
-import javax.ws.rs.GET;
+import galileonews.api.NewsXML;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -26,10 +28,13 @@ import javax.ws.rs.Produces;
 @Path("/")
 public class NewsRest {
 
-    @GET
+    @POST
     @Path("")
+    @Consumes({"application/xml"})
     @Produces({"application/xml"})
-    public String getNewsXML() {
+    public String getNews(NewsXML newsXML) {
+        System.out.println("userName:".concat(newsXML.getUserName()));        
+        
         StringBuilder sb = new StringBuilder();
 
         sb.append("<news>");
