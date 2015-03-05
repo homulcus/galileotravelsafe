@@ -16,9 +16,14 @@
 package galileonews.ejb.dao;
 
 import galileonews.jpa.News;
+import galileonews.jpa.Users;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -48,6 +53,15 @@ public class NewsDaoBean {
 
     public News find(Integer newsId) {
         return em.find(News.class, newsId);
+    }
+
+    public List<News> selectAll() {
+        Query query = em.createNamedQuery("News.selectAll");
+        try {
+            return query.getResultList();
+        } catch (NoResultException ex) {
+        }
+        return new ArrayList<>();
     }
 
 }

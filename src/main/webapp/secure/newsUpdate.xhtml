@@ -14,8 +14,8 @@
             <h:form>
                 <table>
                     <tr>
-                        <td>#{msgs.news_text}</td>
-                        <td> : <p:inputTextarea value="#{news.news.newsText}"/>
+                        <td>#{msgs.news_text} : </td>
+                        <td><p:inputTextarea value="#{news.news.newsText}" rows="10" cols="50"/>
                         </td>
                     </tr>
                     <tr>
@@ -45,6 +45,7 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td><p:commandButton value="#{msgs.update}"
+                                             ajax="false"
                                              action="#{news.saveUpdate()}" />
                         </td>
                     </tr>

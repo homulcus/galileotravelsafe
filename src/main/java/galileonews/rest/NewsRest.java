@@ -15,11 +15,18 @@
  */
 package galileonews.rest;
 
-import galileonews.api.NewsXML;
+import galileonews.api.NewsInput;
+import galileonews.ejb.dao.NewsDaoBean;
+import galileonews.ejb.service.UsersServiceBean;
+import galileonews.jpa.News;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 /**
  *
@@ -28,30 +35,57 @@ import javax.ws.rs.Produces;
 @Path("/")
 public class NewsRest {
 
+    @EJB
+    UsersServiceBean usersServiceBean;
+    @EJB
+    NewsDaoBean newsDaoBean;
+
     @POST
     @Path("")
     @Consumes({"application/xml"})
     @Produces({"application/xml"})
-    public String getNews(NewsXML newsXML) {
-        System.out.println("userName:".concat(newsXML.getUserName()));        
-        
+    public String getNews(NewsInput newsXML, @Context HttpServletRequest request) {
+
+        List<String> errorList = usersServiceBean.logIn(newsXML.getUserName(),
+                newsXML.getPassword(), request.getLocale());
+
+        String lineSeparator = System.getProperty("line.separator");
         StringBuilder sb = new StringBuilder();
-
         sb.append("<news>");
-        
-        sb.append("<msg>");
-        sb.append("<id>xxxxx</id>");
-        sb.append("<line>Silakan klik link dibawah ini</line>");
-        sb.append("<line>http://server:port/appname/news/idxxxxxx</line>");
-        sb.append("</msg>");
-        
-        sb.append("<msg>");
-        sb.append("<id>yyyyy</id>");
-        sb.append("<line>Line 1</line>");
-        sb.append("<line></line>");
-        sb.append("<line>Line 2</line>");
-        sb.append("</msg>");
+        sb.append(lineSeparator);
 
+        if (!errorList.isEmpty()) {
+            sb.append("<errorList>");
+            sb.append(lineSeparator);
+            for (String errorMessage : errorList) {
+                sb.append("<error>");
+                sb.append(errorMessage);
+                sb.append("</error>");
+                sb.append(lineSeparator);
+            }
+            sb.append("</errorList>");
+            sb.append(lineSeparator);
+            sb.append("</news>");
+            return sb.toString();
+        }
+
+        for (News news : newsDaoBean.selectAll()) {
+            sb.append("<msg>");
+            sb.append(lineSeparator);
+            sb.append("<id>");
+            sb.append(news.getNewsId());
+            sb.append("</id>");
+            sb.append(lineSeparator);
+            String[] lines = news.getNewsText().split(lineSeparator);
+            for (String line : lines) {
+                sb.append("<line>");
+                sb.append(line.substring(0, line.length() - 1));
+                sb.append("</line>");
+                sb.append(lineSeparator);
+            }
+            sb.append("</msg>");
+            sb.append(lineSeparator);
+        }
         sb.append("</news>");
 
         return sb.toString();

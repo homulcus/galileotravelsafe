@@ -50,6 +50,9 @@ public class NewsServiceBean {
         if (news.getNewsValidTo() == null) {
             errorList.add(messageSource.getString("news_valid_to_required"));
         }
+        if("".equals(news.getNewsPcc())) {
+            errorList.add(messageSource.getString("news_pcc_required"));
+        }
         if (errorList.isEmpty()) {
             try {
                 newsDaoBean.insert(news);

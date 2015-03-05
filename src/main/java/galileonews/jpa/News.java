@@ -85,6 +85,7 @@ public class News implements Serializable {
     private String newsPcc;
 
     public News() {
+        newsImportant = Boolean.FALSE;
     }
 
     public News(Integer newsId) {

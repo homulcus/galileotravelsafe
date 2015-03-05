@@ -13,8 +13,9 @@
                 <br/><br/>
                 <p:dataTable value="#{news.dataModel}"
                              rows="#{news.noOfRows}"
+                             resizableColumns="true"
                              var="newsItem" paginator="true" lazy="true">
-                    <p:column>
+                    <p:column width="40">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_id}"/>
                         </f:facet>
@@ -26,40 +27,40 @@
                         </f:facet>
                         <pre>#{newsItem.newsText}</pre>
                     </p:column>
-                    <p:column>
+                    <p:column width="100">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_valid_from}"/>
                         </f:facet>
                         #{newsItem.newsValidFromDMY}
                     </p:column>
-                    <p:column>
+                    <p:column width="100">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_valid_to}"/>
                         </f:facet>
                         #{newsItem.newsValidToDMY}
                     </p:column>
-                    <p:column>
+                    <p:column width="80">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_important}"/>
                         </f:facet>
                         #{newsItem.newsImportant}
                     </p:column>
-                    <p:column>
+                    <p:column width="80">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.news_pcc}"/>
                         </f:facet>
                         #{newsItem.newsPcc}
                     </p:column>
-                    <p:column>
+                    <p:column width="80">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.action}"/>
                         </f:facet>
                         <h:link value="#{msgs.read}" outcome="newsRead">
                             <f:param name="newsId" value="#{newsItem.newsId}"/>
-                        </h:link>&nbsp;&nbsp;
+                        </h:link><br/>
                         <h:link value="#{msgs.update}" outcome="newsUpdate">
                             <f:param name="newsId" value="#{newsItem.newsId}"/>
-                        </h:link>&nbsp;&nbsp;
+                        </h:link><br/>
                         <h:link value="#{msgs.delete}" outcome="newsDelete">
                             <f:param name="newsId" value="#{newsItem.newsId}"/>
                         </h:link>
