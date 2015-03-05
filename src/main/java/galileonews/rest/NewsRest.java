@@ -15,10 +15,15 @@
  */
 package galileonews.rest;
 
+import galileonews.api.ErrorList;
+import galileonews.api.Msg;
 import galileonews.api.NewsInput;
+import galileonews.api.NewsOutput;
 import galileonews.ejb.dao.NewsDaoBean;
 import galileonews.ejb.service.UsersServiceBean;
 import galileonews.jpa.News;
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -44,51 +49,27 @@ public class NewsRest {
     @Path("")
     @Consumes({"application/xml"})
     @Produces({"application/xml"})
-    public String getNews(NewsInput newsXML, @Context HttpServletRequest request) {
+    public NewsOutput getNews(NewsInput newsInput, @Context HttpServletRequest request) {
+        NewsOutput newsOutput = new NewsOutput();
 
-        List<String> errorList = usersServiceBean.logIn(newsXML.getUserName(),
-                newsXML.getPassword(), request.getLocale());
-
-        String lineSeparator = System.getProperty("line.separator");
-        StringBuilder sb = new StringBuilder();
-        sb.append("<news>");
-        sb.append(lineSeparator);
+        List<String> errorList = usersServiceBean.logIn(newsInput.getUserName(),
+                newsInput.getPassword(), request.getLocale());
 
         if (!errorList.isEmpty()) {
-            sb.append("<errorList>");
-            sb.append(lineSeparator);
-            for (String errorMessage : errorList) {
-                sb.append("<error>");
-                sb.append(errorMessage);
-                sb.append("</error>");
-                sb.append(lineSeparator);
-            }
-            sb.append("</errorList>");
-            sb.append(lineSeparator);
-            sb.append("</news>");
-            return sb.toString();
+            newsOutput.setErrorList(new ErrorList());
+            newsOutput.getErrorList().getError().addAll(errorList);
+            return newsOutput;
         }
 
+        String lineSeparator = System.getProperty("line.separator");
         for (News news : newsDaoBean.selectAll()) {
-            sb.append("<msg>");
-            sb.append(lineSeparator);
-            sb.append("<id>");
-            sb.append(news.getNewsId());
-            sb.append("</id>");
-            sb.append(lineSeparator);
+            Msg msg = new Msg();
+            msg.setId(BigInteger.valueOf(news.getNewsId().longValue()));
             String[] lines = news.getNewsText().split(lineSeparator);
-            for (String line : lines) {
-                sb.append("<line>");
-                sb.append(line.substring(0, line.length() - 1));
-                sb.append("</line>");
-                sb.append(lineSeparator);
-            }
-            sb.append("</msg>");
-            sb.append(lineSeparator);
+            msg.getLine().addAll(Arrays.asList(lines));
+            newsOutput.getMsg().add(msg);
         }
-        sb.append("</news>");
 
-        return sb.toString();
+        return newsOutput;
     }
-
 }
