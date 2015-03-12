@@ -64,7 +64,6 @@ public class LogInBean implements Serializable {
         Users users = usersDaoBean.selectByUserName(userName);
         visit.setUsers(users);
         visit.setIsAdmin(rolesDaoBean.isAdminByUserName(userName));
-        visit.setIsOwner(rolesDaoBean.isOwnerByUserName(userName));
         final List<String> menuList = rolesDaoBean.getMenuList(userName);
         visit.setMenuList(menuList);
 

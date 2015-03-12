@@ -16,9 +16,9 @@
 package galileonews.ejb.dao;
 
 import galileonews.jpa.News;
-import galileonews.jpa.Users;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -57,6 +57,24 @@ public class NewsDaoBean {
 
     public List<News> selectAll() {
         Query query = em.createNamedQuery("News.selectAll");
+        try {
+            return query.getResultList();
+        } catch (NoResultException ex) {
+        }
+        return new ArrayList<>();
+    }
+
+    public List<News> selectByCriteria(Map<String, Object> paramMap) {
+        StringBuilder jql = new StringBuilder();
+        jql.append("SELECT n FROM News n ");
+        if (!paramMap.isEmpty()) {
+            jql.append("WHERE ");
+            if (paramMap.containsKey("newsImportant")) {
+                jql.append("n.newsImportant=");
+                jql.append(paramMap.get("newsImportant"));
+            }
+        }
+        Query query = em.createQuery(jql.toString());
         try {
             return query.getResultList();
         } catch (NoResultException ex) {

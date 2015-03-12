@@ -24,7 +24,9 @@ import galileonews.ejb.service.UsersServiceBean;
 import galileonews.jpa.News;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -62,7 +64,10 @@ public class NewsRest {
         }
 
         String lineSeparator = System.getProperty("line.separator");
-        for (News news : newsDaoBean.selectAll()) {
+        Boolean newsImportant = newsInput.getImportant();
+        Map<String, Object> paramMap = new HashMap();
+        paramMap.put("newsImportant", newsImportant);
+        for (News news : newsDaoBean.selectByCriteria(paramMap)) {
             Msg msg = new Msg();
             msg.setId(BigInteger.valueOf(news.getNewsId().longValue()));
             String[] lines = news.getNewsText().split(lineSeparator);

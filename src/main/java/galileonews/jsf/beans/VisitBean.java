@@ -75,14 +75,6 @@ public class VisitBean implements Serializable {
         this.isAdmin = isAdmin;
     }
 
-    public Boolean getIsOwner() {
-        return isOwner;
-    }
-
-    public void setIsOwner(Boolean isOwner) {
-        this.isOwner = isOwner;
-    }
-
     public List getMenuList() {
         return menuList;
     }

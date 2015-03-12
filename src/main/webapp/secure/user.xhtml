@@ -9,6 +9,10 @@
                 <p:commandLink action="#{users.changePassword}"
                                value="#{msgs.change_password}"/>
             </li>
+            <li>
+                <p:commandLink action="/secure/news?faces-redirect=true"
+                               value="#{msgs.news}"/>
+            </li>
             <li><br/><br/>
                 <p:commandButton id="logOut" value="Log Out"
                                  action="#{logOut.logOut}"/>

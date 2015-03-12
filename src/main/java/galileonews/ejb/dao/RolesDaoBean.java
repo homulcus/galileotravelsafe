@@ -45,16 +45,6 @@ public class RolesDaoBean {
         }
     }
 
-    public Boolean isOwnerByUserName(String userName) {
-        Query query = em.createNamedQuery("Roles.isOwnerByUserName");
-        query.setParameter("userName", userName);
-        if (query.getResultList().size() > 0) {
-            return Boolean.TRUE;
-        } else {
-            return Boolean.FALSE;
-        }
-    }
-
     public List<String> getMenuList(String userName) {
         Query query = em.createNamedQuery("Roles.selectMenuByUserName");
         query.setParameter("userName", userName);
