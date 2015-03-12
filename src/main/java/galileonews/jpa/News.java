@@ -73,10 +73,10 @@ public class News implements Serializable {
     @Column(name = "news_create_by", length = 50)
     private String newsCreateBy;
     @Column(name = "news_valid_from")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date newsValidFrom;
     @Column(name = "news_valid_to")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date newsValidTo;
     @Column(name = "news_important")
     private Boolean newsImportant;

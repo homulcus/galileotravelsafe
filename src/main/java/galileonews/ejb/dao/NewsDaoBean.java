@@ -17,6 +17,7 @@ package galileonews.ejb.dao;
 
 import galileonews.jpa.News;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -66,15 +67,23 @@ public class NewsDaoBean {
 
     public List<News> selectByCriteria(Map<String, Object> paramMap) {
         StringBuilder jql = new StringBuilder();
+        StringBuilder where = new StringBuilder();
         jql.append("SELECT n FROM News n ");
         if (!paramMap.isEmpty()) {
-            jql.append("WHERE ");
+            where.append("WHERE ");
+            where.append(":today BETWEEN n.newsValidFrom AND n.newsValidTo");
             if (paramMap.containsKey("newsImportant")) {
-                jql.append("n.newsImportant=");
-                jql.append(paramMap.get("newsImportant"));
+                where.append(" AND ");
+                where.append("n.newsImportant = :newsImportant");
             }
         }
+        jql.append(where);
         Query query = em.createQuery(jql.toString());
+        Date date = new Date();
+        query.setParameter("today", date);
+        if (paramMap.containsKey("newsImportant")) {
+            query.setParameter("newsImportant", paramMap.get("newsImportant"));
+        }
         try {
             return query.getResultList();
         } catch (NoResultException ex) {
