@@ -24,6 +24,7 @@ import galileonews.ejb.service.UsersServiceBean;
 import galileonews.jpa.News;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -66,7 +67,9 @@ public class NewsRest {
 
         String lineSeparator = System.getProperty("line.separator");
         Boolean newsImportant = newsInput.getImportant();
+        Date today = newsInput.getToday();
         Map<String, Object> paramMap = new HashMap();
+        paramMap.put("today", today);
         paramMap.put("newsImportant", newsImportant);
         for (News news : newsDaoBean.selectByCriteria(paramMap)) {
             Msg msg = new Msg();

@@ -21,12 +21,16 @@ import galileonews.ejb.service.NewsServiceBean;
 import galileonews.jpa.News;
 import galileonews.jsf.model.DatabaseDataModel;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +46,9 @@ public class NewsBean implements Serializable {
     private static final long serialVersionUID = 7606808154907219715L;
     private final Integer noOfRows = 15;
     private final Integer fastStep = 10;
-    private final DatabaseDataModel dataModel = new DatabaseDataModel();
+    private DataModel dataModel;
+    private DatabaseDataModel databaseDataModel;
+    private ListDataModel listDataModel;
     private News news = null;
     @Inject
     private VisitBean visit;
@@ -55,10 +61,19 @@ public class NewsBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        dataModel.setSelect(NewsDataModelBean.SELECT_ALL);
-        dataModel.setSelectCount(NewsDataModelBean.SELECT_ALL_COUNT);
-        dataModel.setSelectParam(null);
-        dataModel.setWrappedData(newsDataModelBean);
+        if (visit.getIsAdmin()) {
+            databaseDataModel = new DatabaseDataModel();
+            databaseDataModel.setSelect(NewsDataModelBean.SELECT_ALL);
+            databaseDataModel.setSelectCount(NewsDataModelBean.SELECT_ALL_COUNT);
+            databaseDataModel.setSelectParam(null);
+            databaseDataModel.setWrappedData(newsDataModelBean);
+            dataModel = databaseDataModel;
+        } else {
+            Map<String, Object> paramMap = new HashMap();
+            List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
+            listDataModel = new ListDataModel(newsList);
+            dataModel = listDataModel;
+        }
         news = new News();
     }
 
@@ -136,7 +151,7 @@ public class NewsBean implements Serializable {
         return fastStep;
     }
 
-    public DatabaseDataModel getDataModel() {
+    public DataModel getDataModel() {
         return dataModel;
     }
 

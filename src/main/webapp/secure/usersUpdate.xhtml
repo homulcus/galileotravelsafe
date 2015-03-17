@@ -29,6 +29,11 @@
                         <td><p:commandButton value="#{msgs.update}"
                                              ajax="false"
                                              action="#{users.saveUpdate}" />
+                            &nbsp;&nbsp;
+                            <p:commandButton value="#{msgs.reset_password}"
+                                             ajax="false"
+                                             action="#{users.resetPassword}" 
+                                             title="#{msgs.reset_password_info}"/>
                         </td>
                     </tr>
                 </table>

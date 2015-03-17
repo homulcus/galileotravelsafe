@@ -187,6 +187,22 @@ public class UsersBean implements Serializable {
 
         return result;
     }
+    
+    public String resetPassword() {
+        String result = "/secure/usersUpdate";
+        List<String> errorList = usersServiceBean.resetPassword(users, visit.getLocale());
+        if (errorList.size() > 0) {
+            for (String error : errorList) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                error, ""));
+            }
+        } else {
+            result = "/secure/users?faces-redirect=true";
+        }
+
+        return result;
+    }            
 
     public List<SelectItem> getRoleNameList() {
         roleNameList = new ArrayList<>();

@@ -69,26 +69,33 @@ public class NewsDaoBean {
         StringBuilder jql = new StringBuilder();
         StringBuilder where = new StringBuilder();
         jql.append("SELECT n FROM News n ");
-        if (!paramMap.isEmpty()) {
-            where.append("WHERE ");
-            where.append(":today BETWEEN n.newsValidFrom AND n.newsValidTo");
-            if (paramMap.containsKey("newsImportant")) {
-                where.append(" AND ");
-                where.append("n.newsImportant = :newsImportant");
-            }
+        where.append("WHERE ");
+        where.append(":today BETWEEN n.newsValidFrom AND n.newsValidTo");
+        if (paramMap.containsKey("newsImportant")) {
+            where.append(" AND ");
+            where.append("n.newsImportant = :newsImportant");
         }
         jql.append(where);
         Query query = em.createQuery(jql.toString());
-        Date date = new Date();
-        query.setParameter("today", date);
+        Date today = null;
+        if (paramMap.containsKey("today")) {
+            today = (Date) paramMap.get("today");
+        }
+        if (today != null) {
+            query.setParameter("today", today);
+        } else {
+            query.setParameter("today", new Date());
+        }            
+
         if (paramMap.containsKey("newsImportant")) {
             query.setParameter("newsImportant", paramMap.get("newsImportant"));
         }
+        List<News> newsList = new ArrayList<>();
         try {
-            return query.getResultList();
+            newsList = query.getResultList();
         } catch (NoResultException ex) {
         }
-        return new ArrayList<>();
+        return newsList;
     }
 
 }

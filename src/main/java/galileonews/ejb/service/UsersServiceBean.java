@@ -170,6 +170,28 @@ public class UsersServiceBean {
         return errorList;
     }
 
+    public List<String> resetPassword(Users users, Locale locale) {
+        List<String> errorList = new ArrayList<>();
+        ResourceBundle messageSource = ResourceBundle.getBundle(MESSAGES, locale);
+        if (users.getUserId() == null || users.getUserId() == 0) {
+            errorList.add(messageSource.getString("user_id_required"));
+        }
+        if ("".equals(users.getUserName())) {
+            errorList.add(messageSource.getString("user_name_required"));
+        }
+
+        if (errorList.isEmpty()) {
+            try {
+                users.setUserPassword(appServiceBean.hashPassword(users.getUserName()));
+                usersDaoBean.update(users);
+            } catch (Exception ex) {
+                errorList.add(ex.toString());
+                log.severe(ex.toString());
+            }
+        }
+        return errorList;
+    }
+
     public List<String> saveDelete(Users users, Locale locale) {
         List<String> errorList = new ArrayList<>();
         ResourceBundle messageSource = ResourceBundle.getBundle(MESSAGES, locale);
