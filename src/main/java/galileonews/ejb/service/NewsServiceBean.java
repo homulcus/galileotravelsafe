@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -50,28 +49,18 @@ public class NewsServiceBean {
         if (news.getNewsValidTo() == null) {
             errorList.add(messageSource.getString("news_valid_to_required"));
         }
-        if("".equals(news.getNewsPcc())) {
+        if (news.getNewsPcc() == null) {
+            errorList.add(messageSource.getString("news_pcc_required"));
+        }
+        if ("".equals(news.getNewsPcc())) {
             errorList.add(messageSource.getString("news_pcc_required"));
         }
         if (errorList.isEmpty()) {
             try {
                 newsDaoBean.insert(news);
             } catch (Exception ex) {
-                Throwable cause = ex.getCause();
-                boolean duplicate = false;
-                while (cause != null) {
-                    log.log(Level.SEVERE, cause.toString(), cause);
-                    if (cause.toString().contains("Duplicate entry")) {
-                        errorList.add(messageSource.getString("role_name_already_registered"));
-                        duplicate = true;
-                        break;
-                    }
-                    cause = cause.getCause();
-                }
-                if (!duplicate) {
-                    errorList.add(ex.toString());
-                    log.severe(ex.toString());
-                }
+                errorList.add(ex.toString());
+                log.severe(ex.toString());
             }
         }
         return errorList;
@@ -91,6 +80,12 @@ public class NewsServiceBean {
         }
         if (news.getNewsValidTo() == null) {
             errorList.add(messageSource.getString("news_valid_to_required"));
+        }
+        if (news.getNewsPcc() == null) {
+            errorList.add(messageSource.getString("news_pcc_required"));
+        }
+        if ("".equals(news.getNewsPcc())) {
+            errorList.add(messageSource.getString("news_pcc_required"));
         }
         if (errorList.isEmpty()) {
             try {

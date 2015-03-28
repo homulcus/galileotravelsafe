@@ -11,7 +11,7 @@
             </f:metadata>
             <h1>#{msgs.update} #{msgs.news}</h1>
             <p:link value="#{msgs.news_maintenance}" outcome="news"/><br/><br/>
-            <h:form>
+            <h:form id="newsUpdate">
                 <table>
                     <tr>
                         <td>#{msgs.news_text} : </td>
@@ -49,9 +49,22 @@
                                              action="#{news.saveUpdate()}" />
                         </td>
                     </tr>
+                    <tr>
+                        <td>#{msgs.attachment} : </td>
+                        <td><p:fileUpload id="uploadAttachment"
+                                          fileUploadListener="#{news.handleFileUpload}"                                           
+                                          mode="advanced" 
+                                          update="messages"
+                                          dragDropSupport="false"
+                                          sizeLimit="16777215" 
+                                          fileLimit="1"
+                                          allowTypes="/(\.|\/)(pdf|txt|htm|html|jpg|jpeg|png)$/" />
+                            <br/>
+                        </td>
+                    </tr>
                 </table>
+                <p:messages id="messages"/>
             </h:form>
-            <p:messages/>
         </ui:define>
     </ui:composition>
 </html>

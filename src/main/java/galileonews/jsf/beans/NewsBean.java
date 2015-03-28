@@ -21,6 +21,7 @@ import galileonews.ejb.service.NewsServiceBean;
 import galileonews.jpa.News;
 import galileonews.jsf.model.DatabaseDataModel;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -50,6 +52,7 @@ public class NewsBean implements Serializable {
     private DatabaseDataModel databaseDataModel;
     private ListDataModel listDataModel;
     private News news = null;
+    private Boolean important;
     @Inject
     private VisitBean visit;
     @EJB
@@ -60,7 +63,7 @@ public class NewsBean implements Serializable {
     private NewsServiceBean newsServiceBean;
 
     @PostConstruct
-    public void init() {
+    void init() {
         if (visit.getIsAdmin()) {
             databaseDataModel = new DatabaseDataModel();
             databaseDataModel.setSelect(NewsDataModelBean.SELECT_ALL);
@@ -70,11 +73,47 @@ public class NewsBean implements Serializable {
             dataModel = databaseDataModel;
         } else {
             Map<String, Object> paramMap = new HashMap();
+            paramMap.put("today", new Date());
             List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
             listDataModel = new ListDataModel(newsList);
             dataModel = listDataModel;
         }
-        news = new News();
+    }
+
+    public String select() {
+        if (visit.getIsAdmin()) {
+            Map<String, Object> paramMap = new HashMap();
+            paramMap.put("newsImportant", important);
+            List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
+            listDataModel = new ListDataModel(newsList);
+            dataModel = listDataModel;
+        } else {
+            Map<String, Object> paramMap = new HashMap();
+            paramMap.put("today", new Date());
+            paramMap.put("newsImportant", important);
+            List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
+            listDataModel = new ListDataModel(newsList);
+            dataModel = listDataModel;
+        }
+        return "/secure/news?faces-redirect=true";
+    }
+
+    public String selectAll() {
+        if (visit.getIsAdmin()) {
+            databaseDataModel = new DatabaseDataModel();
+            databaseDataModel.setSelect(NewsDataModelBean.SELECT_ALL);
+            databaseDataModel.setSelectCount(NewsDataModelBean.SELECT_ALL_COUNT);
+            databaseDataModel.setSelectParam(null);
+            databaseDataModel.setWrappedData(newsDataModelBean);
+            dataModel = databaseDataModel;
+        } else {
+            Map<String, Object> paramMap = new HashMap();
+            paramMap.put("today", new Date());
+            List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
+            listDataModel = new ListDataModel(newsList);
+            dataModel = listDataModel;
+        }
+        return "/secure/news?faces-redirect=true";
     }
 
     public void findNews() {
@@ -143,6 +182,12 @@ public class NewsBean implements Serializable {
         return result;
     }
 
+    public void handleFileUpload(FileUploadEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        event.getFile().getFileName() + " is uploaded.", ""));
+    }
+
     public Integer getNoOfRows() {
         return noOfRows;
     }
@@ -169,6 +214,14 @@ public class NewsBean implements Serializable {
 
     public void setVisit(VisitBean visit) {
         this.visit = visit;
+    }
+
+    public Boolean getImportant() {
+        return important;
+    }
+
+    public void setImportant(Boolean important) {
+        this.important = important;
     }
 
 }

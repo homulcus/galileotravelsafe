@@ -9,6 +9,18 @@
         <ui:define name="content">
             <h1>#{msgs.news_maintenance}</h1>
             <h:form>
+                <table>
+                    <tr>
+                        <td>#{msgs.news_important}</td>
+                        <td>:<p:selectBooleanCheckbox value="#{news.important}"/></td>
+                        <td><p:commandButton value="#{msgs.select}"
+                                             ajax="false"
+                                             action="#{news.select()}" /></td>
+                        <td><p:commandButton value="#{msgs.all}"
+                                             ajax="false"
+                                             action="#{news.selectAll()}" /></td>
+                    </tr>                    
+                </table>
                 <p:commandLink action="#{news.create}"
                                value="#{msgs.create}"/>
                 <br/><br/>
