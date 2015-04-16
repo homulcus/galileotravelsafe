@@ -26,7 +26,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -67,11 +66,14 @@ public class NewsRest {
 
         String lineSeparator = System.getProperty("line.separator");
         Boolean newsImportant = newsInput.getImportant();
+        Boolean newsAscending = newsInput.getAscending();
         Date today = newsInput.getToday();
         Map<String, Object> paramMap = new HashMap();
         paramMap.put("today", today);
         paramMap.put("newsImportant", newsImportant);
-        for (News news : newsDaoBean.selectByCriteria(paramMap)) {
+        paramMap.put("newsAscending", newsAscending);
+        List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
+        for (News news : newsList) {
             Msg msg = new Msg();
             msg.setId(BigInteger.valueOf(news.getNewsId().longValue()));
             String[] lines = news.getNewsText().split(lineSeparator);

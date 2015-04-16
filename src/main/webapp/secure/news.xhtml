@@ -13,6 +13,8 @@
                     <tr>
                         <td>#{msgs.news_important}</td>
                         <td>:<p:selectBooleanCheckbox value="#{news.important}"/></td>
+                        <td>#{msgs.news_ascending}</td>
+                        <td>:<p:selectBooleanCheckbox value="#{news.ascending}"/></td>
                         <td><p:commandButton value="#{msgs.select}"
                                              ajax="false"
                                              action="#{news.select()}" /></td>

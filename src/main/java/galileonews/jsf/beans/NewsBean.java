@@ -53,6 +53,7 @@ public class NewsBean implements Serializable {
     private ListDataModel listDataModel;
     private News news = null;
     private Boolean important;
+    private Boolean ascending;
     @Inject
     private VisitBean visit;
     @EJB
@@ -64,6 +65,8 @@ public class NewsBean implements Serializable {
 
     @PostConstruct
     void init() {
+        important = Boolean.FALSE;
+        ascending = Boolean.TRUE;
         if (visit.getIsAdmin()) {
             databaseDataModel = new DatabaseDataModel();
             databaseDataModel.setSelect(NewsDataModelBean.SELECT_ALL);
@@ -74,6 +77,7 @@ public class NewsBean implements Serializable {
         } else {
             Map<String, Object> paramMap = new HashMap();
             paramMap.put("today", new Date());
+            paramMap.put("newsAscending", ascending);
             List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
             listDataModel = new ListDataModel(newsList);
             dataModel = listDataModel;
@@ -81,16 +85,15 @@ public class NewsBean implements Serializable {
     }
 
     public String select() {
+        Map<String, Object> paramMap = new HashMap();
+        paramMap.put("newsImportant", important);
+        paramMap.put("newsAscending", ascending);
         if (visit.getIsAdmin()) {
-            Map<String, Object> paramMap = new HashMap();
-            paramMap.put("newsImportant", important);
             List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
             listDataModel = new ListDataModel(newsList);
             dataModel = listDataModel;
         } else {
-            Map<String, Object> paramMap = new HashMap();
             paramMap.put("today", new Date());
-            paramMap.put("newsImportant", important);
             List<News> newsList = newsDaoBean.selectByCriteria(paramMap);
             listDataModel = new ListDataModel(newsList);
             dataModel = listDataModel;
@@ -99,6 +102,8 @@ public class NewsBean implements Serializable {
     }
 
     public String selectAll() {
+        important = Boolean.FALSE;
+        ascending = Boolean.TRUE;
         if (visit.getIsAdmin()) {
             databaseDataModel = new DatabaseDataModel();
             databaseDataModel.setSelect(NewsDataModelBean.SELECT_ALL);
@@ -222,6 +227,14 @@ public class NewsBean implements Serializable {
 
     public void setImportant(Boolean important) {
         this.important = important;
+    }
+
+    public Boolean getAscending() {
+        return ascending;
+    }
+
+    public void setAscending(Boolean ascending) {
+        this.ascending = ascending;
     }
 
 }

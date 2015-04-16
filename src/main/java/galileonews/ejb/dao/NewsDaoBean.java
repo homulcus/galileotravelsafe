@@ -68,6 +68,7 @@ public class NewsDaoBean {
     public List<News> selectByCriteria(Map<String, Object> paramMap) {
         StringBuilder jql = new StringBuilder();
         StringBuilder where = new StringBuilder();
+        StringBuilder order = new StringBuilder();
         jql.append("SELECT n FROM News n ");
         if (paramMap.containsKey("today")) {
             if (where.length() <= 0) {
@@ -82,8 +83,18 @@ public class NewsDaoBean {
                 where.append(" AND ");
             }
             where.append("n.newsImportant = :newsImportant");
+        }        
+        if (paramMap.containsKey("newsAscending")) {
+            Boolean newsAscending = (Boolean) paramMap.get("newsAscending");
+            if(newsAscending) {
+                order.append(" ORDER BY n.newsValidFrom");
+            } else {
+                order.append(" ORDER BY n.newsValidFrom DESC");
+            }            
+        } else {
+            order.append(" ORDER BY n.newsValidFrom");
         }
-        jql.append(where);
+        jql.append(where).append(order);
         Query query = em.createQuery(jql.toString());
         if (paramMap.containsKey("today")) {
             Date today = (Date) paramMap.get("today");
