@@ -15,11 +15,14 @@
  */
 package galileonews.jsf.beans;
 
+import galileonews.ejb.dao.AttachmentDaoBean;
 import galileonews.ejb.dao.NewsDaoBean;
 import galileonews.ejb.datamodel.NewsDataModelBean;
 import galileonews.ejb.service.NewsServiceBean;
+import galileonews.jpa.Attachment;
 import galileonews.jpa.News;
 import galileonews.jsf.model.DatabaseDataModel;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +38,7 @@ import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 
 /**
@@ -62,6 +66,8 @@ public class NewsBean implements Serializable {
     private NewsDataModelBean newsDataModelBean;
     @EJB
     private NewsServiceBean newsServiceBean;
+    @EJB
+    private AttachmentDaoBean attachmentDaoBean;
 
     @PostConstruct
     void init() {
@@ -188,9 +194,23 @@ public class NewsBean implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        event.getFile().getFileName() + " is uploaded.", ""));
+        try {
+            Attachment attachment = new Attachment();
+            attachment.setNewsId(news);
+            attachment.setAttachmentFileName(event.getFile().getFileName());
+            attachment.setAttachmentFileType(event.getFile().getContentType());
+            attachment.setAttachmentContent(IOUtils.toByteArray(event.getFile().getInputstream()));
+            attachmentDaoBean.insert(attachment);
+            
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            event.getFile().getFileName() + " is uploaded.", ""));
+        } catch (IOException ex) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                ex.getMessage(), ""));
+        }
+        
     }
 
     public Integer getNoOfRows() {

@@ -62,8 +62,8 @@ public class Attachment extends Base implements Serializable {
     @Size(max = 250)
     @Column(name = "attachment_file_name", length = 250)
     private String attachmentFileName;
-    @Size(max = 10)
-    @Column(name = "attachment_file_type", length = 10)
+    @Size(max = 30)
+    @Column(name = "attachment_file_type", length = 30)
     private String attachmentFileType;
     @Lob
     @Column(name = "attachment_content")
