@@ -15,11 +15,12 @@
  */
 package galileonews.jsf.beans;
 
-import galileonews.ejb.dao.AttachmentDaoBean;
 import galileonews.ejb.dao.NewsDaoBean;
+import galileonews.ejb.datamodel.AttachmentsDataModelBean;
 import galileonews.ejb.datamodel.NewsDataModelBean;
+import galileonews.ejb.service.AttachmentsServiceBean;
 import galileonews.ejb.service.NewsServiceBean;
-import galileonews.jpa.Attachment;
+import galileonews.jpa.Attachments;
 import galileonews.jpa.News;
 import galileonews.jsf.model.DatabaseDataModel;
 import java.io.IOException;
@@ -53,9 +54,10 @@ public class NewsBean implements Serializable {
     private final Integer noOfRows = 15;
     private final Integer fastStep = 10;
     private DataModel dataModel;
+    private DataModel attachmentsDataModel;
     private DatabaseDataModel databaseDataModel;
     private ListDataModel listDataModel;
-    private News news = null;
+    private News news;
     private Boolean important;
     private Boolean ascending;
     @Inject
@@ -67,7 +69,9 @@ public class NewsBean implements Serializable {
     @EJB
     private NewsServiceBean newsServiceBean;
     @EJB
-    private AttachmentDaoBean attachmentDaoBean;
+    private AttachmentsServiceBean attachmentServiceBean;
+    @EJB
+    private AttachmentsDataModelBean attachmentsDataModelBean;
 
     @PostConstruct
     void init() {
@@ -134,6 +138,14 @@ public class NewsBean implements Serializable {
         if (newsId != null) {
             Integer newsIdInt = Integer.valueOf(newsId);
             news = newsDaoBean.find(newsIdInt);
+            DatabaseDataModel dbDataModel = new DatabaseDataModel();
+            dbDataModel.setSelect(AttachmentsDataModelBean.SELECT_BY_NEWS);
+            dbDataModel.setSelectCount(AttachmentsDataModelBean.SELECT_BY_NEWS_COUNT);
+            Map<String,Object> param = new HashMap();
+            param.put("newsId", news);
+            dbDataModel.setSelectParam(param);
+            dbDataModel.setWrappedData(newsDataModelBean);
+            attachmentsDataModel = dbDataModel;            
         }
     }
 
@@ -195,22 +207,22 @@ public class NewsBean implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) {
         try {
-            Attachment attachment = new Attachment();
+            Attachments attachment = new Attachments();
             attachment.setNewsId(news);
             attachment.setAttachmentFileName(event.getFile().getFileName());
             attachment.setAttachmentFileType(event.getFile().getContentType());
             attachment.setAttachmentContent(IOUtils.toByteArray(event.getFile().getInputstream()));
-            attachmentDaoBean.insert(attachment);
-            
+            attachmentServiceBean.saveCreate(attachment, visit.getLocale());
+
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             event.getFile().getFileName() + " is uploaded.", ""));
         } catch (IOException ex) {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                ex.getMessage(), ""));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            ex.getMessage(), ""));
         }
-        
+
     }
 
     public Integer getNoOfRows() {
@@ -255,6 +267,22 @@ public class NewsBean implements Serializable {
 
     public void setAscending(Boolean ascending) {
         this.ascending = ascending;
+    }
+
+    public AttachmentsDataModelBean getAttachmentsDataModelBean() {
+        return attachmentsDataModelBean;
+    }
+
+    public void setAttachmentsDataModelBean(AttachmentsDataModelBean attachmentsDataModelBean) {
+        this.attachmentsDataModelBean = attachmentsDataModelBean;
+    }
+
+    public DataModel getAttachmentsDataModel() {
+        return attachmentsDataModel;
+    }
+
+    public void setAttachmentsDataModel(DataModel attachmentsDataModel) {
+        this.attachmentsDataModel = attachmentsDataModel;
     }
 
 }

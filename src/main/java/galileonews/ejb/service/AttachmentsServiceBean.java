@@ -15,8 +15,8 @@
  */
 package galileonews.ejb.service;
 
-import galileonews.ejb.dao.AttachmentDaoBean;
-import galileonews.jpa.Attachment;
+import galileonews.ejb.dao.AttachmentsDaoBean;
+import galileonews.jpa.Attachments;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,14 +30,14 @@ import javax.ejb.Stateless;
  * @author Samuel Franklyn <sfranklyn@gmail.com>
  */
 @Stateless
-public class AttachmentServiceBean {
+public class AttachmentsServiceBean {
 
-    private static final Logger log = Logger.getLogger(AttachmentServiceBean.class.getName());
+    private static final Logger log = Logger.getLogger(AttachmentsServiceBean.class.getName());
     private static final String MESSAGES = "ejbmessages";
     @EJB
-    private AttachmentDaoBean attachmentDaoBean;
+    private AttachmentsDaoBean attachmentDaoBean;
 
-    public List<String> saveCreate(Attachment attachment, Locale locale) {
+    public List<String> saveCreate(Attachments attachment, Locale locale) {
         List<String> errorList = new ArrayList<>();
         ResourceBundle messageSource = ResourceBundle.getBundle(MESSAGES, locale);
         if (attachment.getNewsId() == null) {

@@ -35,20 +35,20 @@ import javax.validation.constraints.Size;
  * @author Samuel Franklyn <sfranklyn@gmail.com>
  */
 @Entity
-@Table(name = "attachment")
+@Table(name = "attachments")
 @NamedQueries({
-    @NamedQuery(name = "Attachment.selectAll",
-            query = "SELECT a FROM Attachment a"),
-    @NamedQuery(name = "Attachment.selectAllCount",
-            query = "SELECT COUNT(a) FROM Attachment a"),
-    @NamedQuery(name = "Attachment.selectByNews",
-            query = "SELECT a FROM Attachment a "
+    @NamedQuery(name = "Attachments.selectAll",
+            query = "SELECT a FROM Attachments a"),
+    @NamedQuery(name = "Attachments.selectAllCount",
+            query = "SELECT COUNT(a) FROM Attachments a"),
+    @NamedQuery(name = "Attachments.selectByNews",
+            query = "SELECT a FROM Attachments a "
             + "WHERE a.newsId = :newsId"),
-    @NamedQuery(name = "Attachment.selectCountByNews",
-            query = "SELECT COUNT(a) FROM Attachment a "
+    @NamedQuery(name = "Attachments.selectByNewsCount",
+            query = "SELECT COUNT(a) FROM Attachments a "
             + "WHERE a.newsId = :newsId")
 })
-public class Attachment extends Base implements Serializable {
+public class Attachments extends Base implements Serializable {
 
     private static final long serialVersionUID = -6514552662020952310L;
     @Id
@@ -69,10 +69,10 @@ public class Attachment extends Base implements Serializable {
     @Column(name = "attachment_content")
     private byte[] attachmentContent;
 
-    public Attachment() {
+    public Attachments() {
     }
 
-    public Attachment(Integer attachmentId) {
+    public Attachments(Integer attachmentId) {
         this.attachmentId = attachmentId;
     }
 

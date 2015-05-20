@@ -55,12 +55,35 @@
                         <td><p:fileUpload id="uploadAttachment"
                                           fileUploadListener="#{news.handleFileUpload}"                                           
                                           mode="advanced" 
-                                          update="messages"
+                                          update="messages,attachmentsDataModel"
                                           dragDropSupport="false"
                                           sizeLimit="16777215" 
-                                          fileLimit="1"
-                                          allowTypes="/(\.|\/)(pdf|txt|htm|html|jpg|jpeg|png)$/" />
+                                          allowTypes="/(\.|\/)(pdf|txt|htm|html|jpg|jpeg|png)$/i" />
                             <br/>
+                            <p:dataTable id="attachmentsDataModel"
+                                         value="#{news.attachmentsDataModel}"
+                                         rows="#{news.noOfRows}"
+                                         resizableColumns="true"
+                                         var="attachment" paginator="true" lazy="true">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.attachments_id}"/>
+                                    </f:facet>
+                                    #{attachment.attachmentId}
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.attachments_file_name}"/>
+                                    </f:facet>
+                                    <pre>#{attachment.attachmentFileName}</pre>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.attachments_file_type}"/>
+                                    </f:facet>
+                                    #{attachment.attachmentFileType}
+                                </p:column>
+                            </p:dataTable>
                         </td>
                     </tr>
                 </table>

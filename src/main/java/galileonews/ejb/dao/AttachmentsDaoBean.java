@@ -15,7 +15,7 @@
  */
 package galileonews.ejb.dao;
 
-import galileonews.jpa.Attachment;
+import galileonews.jpa.Attachments;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,29 +25,29 @@ import javax.persistence.PersistenceContext;
  * @author Samuel Franklyn <sfranklyn@gmail.com>
  */
 @Stateless
-public class AttachmentDaoBean {
+public class AttachmentsDaoBean {
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(Attachment attachment) {
+    public void insert(Attachments attachment) {
         em.persist(attachment);
         em.flush();
     }
 
     public void delete(Integer attachmentId) {
-        Attachment attachment = em.find(Attachment.class, attachmentId);
+        Attachments attachment = em.find(Attachments.class, attachmentId);
         em.remove(attachment);
         em.flush();
     }
 
-    public void update(Attachment attachment) {
+    public void update(Attachments attachment) {
         em.merge(attachment);
         em.flush();
     }
 
-    public Attachment find(Integer attachmentId) {
-        return em.find(Attachment.class, attachmentId);
+    public Attachments find(Integer attachmentId) {
+        return em.find(Attachments.class, attachmentId);
     }
     
 }
