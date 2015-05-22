@@ -23,7 +23,9 @@ import galileonews.ejb.service.NewsServiceBean;
 import galileonews.jpa.Attachments;
 import galileonews.jpa.News;
 import galileonews.jsf.model.DatabaseDataModel;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +43,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -60,6 +64,8 @@ public class NewsBean implements Serializable {
     private News news;
     private Boolean important;
     private Boolean ascending;
+    private Attachments selectedAttachments;
+    private StreamedContent file;
     @Inject
     private VisitBean visit;
     @EJB
@@ -141,11 +147,11 @@ public class NewsBean implements Serializable {
             DatabaseDataModel dbDataModel = new DatabaseDataModel();
             dbDataModel.setSelect(AttachmentsDataModelBean.SELECT_BY_NEWS);
             dbDataModel.setSelectCount(AttachmentsDataModelBean.SELECT_BY_NEWS_COUNT);
-            Map<String,Object> param = new HashMap();
+            Map<String, Object> param = new HashMap();
             param.put("newsId", news);
             dbDataModel.setSelectParam(param);
             dbDataModel.setWrappedData(newsDataModelBean);
-            attachmentsDataModel = dbDataModel;            
+            attachmentsDataModel = dbDataModel;
         }
     }
 
@@ -225,6 +231,13 @@ public class NewsBean implements Serializable {
 
     }
 
+    public StreamedContent getFile() {
+        InputStream stream = new ByteArrayInputStream(selectedAttachments.getAttachmentContent());
+        file = new DefaultStreamedContent(stream, selectedAttachments.getAttachmentFileType(),
+                selectedAttachments.getAttachmentFileName());
+        return file;
+    }
+
     public Integer getNoOfRows() {
         return noOfRows;
     }
@@ -283,6 +296,14 @@ public class NewsBean implements Serializable {
 
     public void setAttachmentsDataModel(DataModel attachmentsDataModel) {
         this.attachmentsDataModel = attachmentsDataModel;
+    }
+
+    public Attachments getSelectedAttachments() {
+        return selectedAttachments;
+    }
+
+    public void setSelectedAttachments(Attachments selectedAttachments) {
+        this.selectedAttachments = selectedAttachments;
     }
 
 }

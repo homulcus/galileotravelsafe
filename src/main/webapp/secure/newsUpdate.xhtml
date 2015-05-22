@@ -43,13 +43,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>&nbsp;</td>
-                        <td><p:commandButton value="#{msgs.update}"
-                                             ajax="false"
-                                             action="#{news.saveUpdate()}" />
-                        </td>
-                    </tr>
-                    <tr>
                         <td>#{msgs.attachment} <br/>
                             #{msgs.attachment_type} : </td>
                         <td><p:fileUpload id="uploadAttachment"
@@ -83,7 +76,26 @@
                                     </f:facet>
                                     #{attachment.attachmentFileType}
                                 </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.action}"/>
+                                    </f:facet>
+                                    <p:commandButton ajax="false" 
+                                                     value="#{msgs.download}">
+                                        <f:setPropertyActionListener 
+                                            value="#{attachment}" 
+                                            target="#{news.selectedAttachments}" />
+                                        <p:fileDownload value="#{news.file}" />
+                                    </p:commandButton>
+                                </p:column>                               
                             </p:dataTable>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><p:commandButton value="#{msgs.update}"
+                                             ajax="false"
+                                             action="#{news.saveUpdate()}" />
                         </td>
                     </tr>
                 </table>
