@@ -53,4 +53,21 @@ public class AttachmentsServiceBean {
         }
         return errorList;
     }
+
+    public List<String> saveDelete(Attachments attachment, Locale locale) {
+        List<String> errorList = new ArrayList<>();
+        ResourceBundle messageSource = ResourceBundle.getBundle(MESSAGES, locale);
+        if (attachment.getNewsId() == null) {
+            errorList.add(messageSource.getString("news_id_required"));
+        }
+        if (errorList.isEmpty()) {
+            try {
+                attachmentDaoBean.delete(attachment.getAttachmentId());
+            } catch (Exception ex) {
+                errorList.add(ex.toString());
+                log.severe(ex.toString());
+            }
+        }
+        return errorList;
+    }
 }

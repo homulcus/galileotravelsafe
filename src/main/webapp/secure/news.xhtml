@@ -82,6 +82,16 @@
                             </h:link>
                         </p:column>
                     </c:if>
+                    <c:if test="#{!visit.isAdmin}">
+                        <p:column width="80">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.action}"/>
+                            </f:facet>
+                            <h:link value="#{msgs.read}" outcome="newsRead">
+                                <f:param name="newsId" value="#{newsItem.newsId}"/>
+                            </h:link>
+                        </p:column>
+                    </c:if>
                 </p:dataTable>
             </h:form>
         </ui:define>

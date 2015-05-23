@@ -238,6 +238,17 @@ public class NewsBean implements Serializable {
         return file;
     }
 
+    public void deleteAttachment() {
+        List<String> errorList = attachmentServiceBean.saveDelete(selectedAttachments, visit.getLocale());
+        if (errorList.size() > 0) {
+            for (String error : errorList) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                error, ""));
+            }
+        }
+    }
+    
     public Integer getNoOfRows() {
         return noOfRows;
     }

@@ -80,6 +80,13 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{msgs.action}"/>
                                     </f:facet>
+                                    <p:commandButton value="#{msgs.delete}"
+                                                     ajax="false"
+                                                     action="#{news.deleteAttachment()}" >
+                                        <f:setPropertyActionListener 
+                                            value="#{attachment}" 
+                                            target="#{news.selectedAttachments}" />
+                                    </p:commandButton>&nbsp;&nbsp;
                                     <p:commandButton ajax="false" 
                                                      value="#{msgs.download}">
                                         <f:setPropertyActionListener 

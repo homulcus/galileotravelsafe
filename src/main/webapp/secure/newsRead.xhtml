@@ -9,36 +9,74 @@
             <f:metadata>
                 <f:event type="preRenderView" listener="#{news.findNews()}"/>
             </f:metadata>
-            <h1>#{msgs.delete} #{msgs.news}</h1>
+            <h1>#{msgs.read} #{msgs.news}</h1>
             <p:link value="#{msgs.news_maintenance}" outcome="news"/><br/><br/>
-            <table>
-                <tr>
-                    <td>#{msgs.news_text} : </td>
-                    <td><pre>#{news.news.newsText}</pre> 
-                    </td>
-                </tr>
-                <tr>
-                    <td>#{msgs.news_valid_from}</td>
-                    <td> : #{news.news.newsValidFromDMY}
-                    </td>
-                </tr>
-                <tr>
-                    <td>#{msgs.news_valid_to}</td>
-                    <td> : #{news.news.newsValidToDMY}
-                    </td>
-                </tr>
-                <tr>
-                    <td>#{msgs.news_important}</td>
-                    <td> : #{news.news.newsImportant}
-                    </td>
-                </tr>
-                <tr>
-                    <td>#{msgs.news_pcc}</td>
-                    <td> : #{news.news.newsPcc}
-                    </td>
-                </tr>
-            </table>
-            <p:messages/>
+            <h:form id="newsRead">
+                <table>
+                    <tr>
+                        <td>#{msgs.news_text} : </td>
+                        <td><pre>#{news.news.newsText}</pre> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.news_valid_from}</td>
+                        <td> : #{news.news.newsValidFromDMY}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.news_valid_to}</td>
+                        <td> : #{news.news.newsValidToDMY}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.news_important}</td>
+                        <td> : #{news.news.newsImportant}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.news_pcc}</td>
+                        <td> : #{news.news.newsPcc}
+                        </td>
+                    </tr>
+                </table>
+                <p:dataTable id="attachmentsDataModel"
+                             value="#{news.attachmentsDataModel}"
+                             rows="#{news.noOfRows}"
+                             resizableColumns="true"
+                             var="attachment" paginator="true" lazy="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.attachments_id}"/>
+                        </f:facet>
+                        #{attachment.attachmentId}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.attachments_file_name}"/>
+                        </f:facet>
+                        <pre>#{attachment.attachmentFileName}</pre>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.attachments_file_type}"/>
+                        </f:facet>
+                        #{attachment.attachmentFileType}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.action}"/>
+                        </f:facet>
+                        <p:commandButton ajax="false" 
+                                         value="#{msgs.download}">
+                            <f:setPropertyActionListener 
+                                value="#{attachment}" 
+                                target="#{news.selectedAttachments}" />
+                            <p:fileDownload value="#{news.file}" />
+                        </p:commandButton>
+                    </p:column>                               
+                </p:dataTable>
+                <p:messages id="messages"/>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>
