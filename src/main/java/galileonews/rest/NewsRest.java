@@ -19,8 +19,10 @@ import galileonews.api.ErrorList;
 import galileonews.api.Msg;
 import galileonews.api.NewsInput;
 import galileonews.api.NewsOutput;
+import galileonews.ejb.dao.AttachmentsDaoBean;
 import galileonews.ejb.dao.NewsDaoBean;
 import galileonews.ejb.service.UsersServiceBean;
+import galileonews.jpa.Attachments;
 import galileonews.jpa.News;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -43,10 +46,13 @@ import javax.ws.rs.core.Context;
 @Path("/")
 public class NewsRest {
 
+    private static final String MESSAGES = "ejbmessages";
     @EJB
     UsersServiceBean usersServiceBean;
     @EJB
     NewsDaoBean newsDaoBean;
+    @EJB
+    AttachmentsDaoBean attachmentsDaoBean;
 
     @POST
     @Path("")
@@ -55,6 +61,7 @@ public class NewsRest {
     public NewsOutput getNews(NewsInput newsInput, @Context HttpServletRequest request) {
         NewsOutput newsOutput = new NewsOutput();
 
+        ResourceBundle messageSource = ResourceBundle.getBundle(MESSAGES, request.getLocale());
         List<String> errorList = usersServiceBean.logIn(newsInput.getUserName(),
                 newsInput.getPassword(), request.getLocale());
 
@@ -78,6 +85,25 @@ public class NewsRest {
             msg.setId(BigInteger.valueOf(news.getNewsId().longValue()));
             String[] lines = news.getNewsText().split(lineSeparator);
             msg.getLine().addAll(Arrays.asList(lines));
+            paramMap = new HashMap();
+            paramMap.put("newsId", news);
+            List<Attachments> attachmentsList = attachmentsDaoBean.selectByNews(news);
+            if (!attachmentsList.isEmpty()) {
+                msg.getLine().add(messageSource.getString("attachment_download"));
+
+                StringBuilder attachmentURL = new StringBuilder();
+                attachmentURL.append("http://");
+                attachmentURL.append(request.getServerName());
+                attachmentURL.append(":");
+                attachmentURL.append(request.getServerPort());
+                attachmentURL.append(request.getContextPath());
+                attachmentURL.append("/news");
+                attachmentURL.append("/id");
+                for (Attachments attachments : attachmentsList) {
+                    msg.getLine().add(attachmentURL.toString().
+                            concat(attachments.getAttachmentId().toString()));
+                }
+            }
             newsOutput.getMsg().add(msg);
         }
 

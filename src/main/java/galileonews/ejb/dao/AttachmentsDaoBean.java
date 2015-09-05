@@ -15,10 +15,15 @@
  */
 package galileonews.ejb.dao;
 
+import galileonews.ejb.datamodel.AttachmentsDataModelBean;
 import galileonews.jpa.Attachments;
+import galileonews.jpa.News;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -49,5 +54,11 @@ public class AttachmentsDaoBean {
     public Attachments find(Integer attachmentId) {
         return em.find(Attachments.class, attachmentId);
     }
-    
+
+    public List<Attachments> selectByNews(News news) {
+        Query query = em.createNamedQuery(AttachmentsDataModelBean.SELECT_BY_NEWS);
+        query.setParameter("newsId", news);
+        List<Attachments> attachmentsList = query.getResultList();
+        return attachmentsList;
+    }
 }

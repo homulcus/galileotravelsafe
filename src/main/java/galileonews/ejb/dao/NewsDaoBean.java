@@ -76,21 +76,21 @@ public class NewsDaoBean {
             }
             where.append(":today BETWEEN n.newsValidFrom AND n.newsValidTo");
         }
-        if (paramMap.containsKey("newsImportant")) {
+        if (paramMap.containsKey("newsImportant") && (paramMap.get("newsImportant") != null)) {
             if (where.length() <= 0) {
                 where.append("WHERE ");
             } else {
                 where.append(" AND ");
             }
             where.append("n.newsImportant = :newsImportant");
-        }        
-        if (paramMap.containsKey("newsAscending")) {
+        }
+        if (paramMap.containsKey("newsAscending") && (paramMap.get("newsAscending") != null)) {
             Boolean newsAscending = (Boolean) paramMap.get("newsAscending");
-            if(newsAscending) {
+            if (newsAscending) {
                 order.append(" ORDER BY n.newsValidFrom");
             } else {
                 order.append(" ORDER BY n.newsValidFrom DESC");
-            }            
+            }
         } else {
             order.append(" ORDER BY n.newsValidFrom");
         }
@@ -100,7 +100,7 @@ public class NewsDaoBean {
             Date today = (Date) paramMap.get("today");
             query.setParameter("today", today);
         }
-        if (paramMap.containsKey("newsImportant")) {
+        if (paramMap.containsKey("newsImportant") && (paramMap.get("newsImportant") != null)) {
             query.setParameter("newsImportant", paramMap.get("newsImportant"));
         }
         List<News> newsList = new ArrayList<>();
