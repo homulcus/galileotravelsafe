@@ -42,6 +42,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 /**
  *
@@ -117,8 +118,12 @@ public class NewsRest {
     @GET
     @Path("id{attachmentId}")
     @Produces({MediaType.TEXT_PLAIN, MediaType.TEXT_HTML})
-    public Response getAttachment(@PathParam("attachmentId") String attachmentId) {
-        return Response.ok().entity(attachmentId).build();
+    public Response getAttachment(@PathParam("attachmentId") String strAttachmentId) {
+        Integer attachmentId = Integer.parseInt(strAttachmentId);
+        Attachments attachments = attachmentsDaoBean.find(attachmentId);
+        ResponseBuilder response = Response.ok((Object) attachments.getAttachmentContent());
+        response.header("Content-Disposition", "attachment; filename=" + attachments.getAttachmentFileName());
+        return response.build();
     }
 
 }
